@@ -7,6 +7,10 @@ name = "pypi"
 django = "*"
 djangorestframework = "*"
 python-dotenv = "*"
+django-simple-history = "*"
+pillow = "*"
+requests = "*"
+black = "*"
 
 [dev-packages]
 requests = "*"
