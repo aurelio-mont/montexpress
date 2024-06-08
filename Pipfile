@@ -11,9 +11,9 @@ django-simple-history = "*"
 pillow = "*"
 requests = "*"
 black = "*"
+djangorestframework-simplejwt = "*"
 
 [dev-packages]
-requests = "*"
 
 [requires]
 python_version = "3.12"
