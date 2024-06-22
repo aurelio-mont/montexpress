@@ -4,10 +4,10 @@ from rest_framework import generics, status
 from rest_framework.response import Response
 from rest_framework.request import Request
 from rest_framework.views import APIView
-from rest_framework.permissions import AllowAny
+from rest_framework.permissions import AllowAny, IsAuthenticated
 
 from accounts.seralizers import SignUpSerializer
-from accounts.tokens import create_jwt_pair_for_user
+from accounts.tokens import create_jwt_pair_for_user, delete_jwt_pair_for_user
 
 class SignUpView(generics.CreateAPIView):
     serializer_class = SignUpSerializer
@@ -29,12 +29,15 @@ class SignUpView(generics.CreateAPIView):
         return Response(data=serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
 class LogoutView(APIView):
-    def post(self, request: Request):
-        request.user.auth_token.delete()
-        response = {
-            'message': 'Logout successfully'
-        }
-        return Response(data=response, status=status.HTTP_200_OK)
+    permission_classes = [IsAuthenticated]
+    def post(self, request):
+        try:
+            refresh_token = request.data["refresh"]
+            delete_jwt_pair_for_user(refresh_token)
+
+            return Response(status=status.HTTP_205_RESET_CONTENT)
+        except Exception as e:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
     
 class LoginView(APIView):
     permission_classes = []
@@ -65,3 +68,11 @@ class LoginView(APIView):
 
         return Response(data=content, status=status.HTTP_200_OK)
     
+
+class UsersView(generics.ListAPIView):
+    permission_classes = [IsAuthenticated]
+    serializer_class = SignUpSerializer
+    queryset = SignUpSerializer.Meta.model.objects.all()
+    
+    def get_queryset(self):
+        return self.queryset

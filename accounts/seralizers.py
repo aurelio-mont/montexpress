@@ -13,9 +13,13 @@ class SignUpSerializer(serializers.ModelSerializer):
         
     def validate(self, attrs):
         email_exists = User.objects.filter(email=attrs['email']).exists()
+        username_exists = User.objects.filter(username=attrs['username']).exists()
 
         if email_exists:
             raise ValidationError('Email already exists')
+        
+        if username_exists:
+            raise ValidationError('Username already exists')
 
         return super().validate(attrs)
     

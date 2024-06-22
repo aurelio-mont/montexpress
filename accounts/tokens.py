@@ -10,3 +10,8 @@ def create_jwt_pair_for_user(user: User):
     tokens = {"access": str(refresh.access_token), "refresh": str(refresh)}
 
     return tokens
+
+def delete_jwt_pair_for_user(refresh_token: str):
+    refresh = RefreshToken(refresh_token)
+    refresh.blacklist()
+    return True

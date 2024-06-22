@@ -33,7 +33,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'rest_framework.authtoken',
-    'rest_framework_simplejwt',
+    'rest_framework_simplejwt.token_blacklist',
+    'drf_yasg',
     'simple_history',
     'accounts',
     'post',
@@ -73,7 +74,7 @@ REST_FRAMEWORK = {
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(hours=2),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
-    'sIGNING_KEY': os.getenv('SECRET_KEY'),
+    'SIGNING_KEY': os.getenv('SECRET_KEY'),
     'AUTH_HEADER_TYPES': ('Bearer',),
 }
 
